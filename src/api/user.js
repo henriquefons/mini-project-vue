@@ -4,7 +4,7 @@ export default {
   getUsers() {
     return new Promise((resolve, reject) => {
       api
-        .get('https://gorest.co.in/public/v1/users',)
+        .get('/users')
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });
@@ -12,7 +12,7 @@ export default {
   editUser(id, data) {
     return new Promise((resolve, reject) => {
       api
-        .put(`https://gorest.co.in/public/v1/users/${id}`, data)
+        .put(`/users/${id}`, data)
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });

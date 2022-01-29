@@ -1,6 +1,6 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
+    <h1 class="text-warning">{{ msg }}</h1>
     <button @click="editUser({ id: 1, data: { name: 'Joaquim Maria BR' }})"> Editar </button>
     <button @click="getUsers()"> Buscar </button>
   </div>
