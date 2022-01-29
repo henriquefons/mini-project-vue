@@ -9,6 +9,14 @@ export default {
         .catch((error) => reject(error));
     });
   },
+  createUser(data) {
+    return new Promise((resolve, reject) => {
+      api
+        .post('/users', data)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error));
+    });
+  },
   editUser(id, data) {
     return new Promise((resolve, reject) => {
       api
