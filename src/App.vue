@@ -1,16 +1,14 @@
 <template>
   <Navbar />
-  <HelloWorld msg="Hello Word My Friend"/>
+  <router-view />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Navbar from './components/Navbar.vue'
+import Navbar from './components/Templates/Navbar.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
     Navbar
   }
 }
