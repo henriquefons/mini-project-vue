@@ -11,7 +11,7 @@
             <router-link class="nav-link" to="/todo">TODO</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link active" to="/post">Postagens</router-link>
+            <router-link class="nav-link" to="/post">Postagens</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/user">Usuários</router-link>

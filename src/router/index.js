@@ -14,6 +14,7 @@ const routes = [
 const router = createRouter({
   // 4. Provide the history implementation to use. We are using the hash history for simplicity here.
   history: createWebHistory(process.env.BASE_URL),
+  linkActiveClass: "active",
   routes, // short for `routes: routes`
 });
 
