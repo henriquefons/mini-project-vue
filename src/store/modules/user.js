@@ -5,11 +5,13 @@ const getDefaultState = () => {
     user: null,
     currentUser: null,
     error: null,
-    loading: false,
   };
 };
 
-const state = getDefaultState();
+const state = {
+  ...getDefaultState(),
+  loading: false,
+}
 
 const getters = {
   user: (state) => state.user,

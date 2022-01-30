@@ -46,9 +46,6 @@ export default {
       }
     }
   },
-  props: {
-    msg: String
-  },
   created() {
     this.getPosts();
   },

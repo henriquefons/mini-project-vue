@@ -4,11 +4,13 @@ const getDefaultState = () => {
   return {
     post: null,
     error: null,
-    loading: false,
   };
 };
 
-const state = getDefaultState();
+const state = {
+  ...getDefaultState(),
+  loading: false,
+}
 
 const getters = {
   post: (state) => state.post,
@@ -18,7 +20,7 @@ const getters = {
 
 const actions = {
   getPosts({ commit }, data) {
-    commit("resetPostState");
+    commit("resetPostState", true);
     commit("setLoading", true);
     postApi
       .getPosts(data)
@@ -32,8 +34,20 @@ const actions = {
         throw error;
       });
   },
+  getPostById({ commit }, data) {
+    commit("setLoading", true);
+    postApi
+      .getPosts(data)
+      .then((data) => {
+        commit("setLoading", false);
+        if (data) commit("setPost", data.data[0]);
+      })
+      .catch((error) => {
+        commit("setLoading", false);
+        throw error;
+      });
+  },
   createPost({ commit }, data) {
-    commit("resetPostState");
     commit("setLoading", true);
     postApi
       .createPost(data)
