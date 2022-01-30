@@ -58,9 +58,12 @@
                 <td>{{ u.gender }}</td>
                 <td>{{ u.status === 'active' ? 'Ativo' : 'Inativo' }}</td>
                 <td>
-                  <router-link class="btn-sm btn-outline-Primary" :to="`/user/edit/${u.id}`">
+                  <router-link title="Editar usuário" class="btn-sm btn-outline-secondary" :to="`/user/edit/${u.id}`">
                     <i class="bi bi-pencil-fill"></i>
                   </router-link>
+                  <a title="Logar com usuário" class="btn-sm btn-outline-success" @click="signIn(u)">
+                    <i class="bi bi-box-arrow-right"></i>
+                  </a>
                 </td>
               </tr>
             </tbody>
@@ -96,13 +99,20 @@ export default {
   },
   methods: {
     ...mapActions('user', ['getUsers']),
+    ...mapActions('storage', ['createCurrentUser']),
     ...mapMutations('user', ['resetUserState']),
     onSearch() {
       if (this.timeout) clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
         this.getUsers(this.formData)
       }, 700)
-    }
+    },
+    signIn(user) {
+      if (!user) return alert('aconteceu um error')
+      localStorage.setItem('current-user-blog', JSON.stringify(user))
+      this.createCurrentUser(user)
+      alert(`Logado com o usuário ${user.name}`)
+    },
   },
 }
 </script>

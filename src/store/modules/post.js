@@ -23,6 +23,7 @@ const actions = {
     postApi
       .getPosts(data)
       .then((data) => {
+        console.log(data)
         commit("setLoading", false);
         if (data) commit("setPost", data.data);
       })

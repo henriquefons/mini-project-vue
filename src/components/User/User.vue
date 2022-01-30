@@ -80,7 +80,6 @@ export default {
     }
   },
   unmounted() {
-    console.log('sai')
     this.resetUserState();
   },
   computed: {

@@ -3,6 +3,7 @@ import userApi from "../../api/user";
 const getDefaultState = () => {
   return {
     user: null,
+    currentUser: null,
     error: null,
     loading: false,
   };

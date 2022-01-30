@@ -6,7 +6,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav nav-links">
           <li class="nav-item">
             <router-link class="nav-link" to="/todo">TODO</router-link>
           </li>
@@ -16,8 +16,12 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/user">Usuários</router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
+          <div class="w-100">Flex item</div>
+          <li class="nav-item d-flex" v-if="currentUser">
+            <a class="nav-link text-danger text-nowrap">{{currentUser.name}}</a>
+            <a role="button" class="nav-link text-danger" @click.prevent="logout">
+              <i title="Sair com usuário" class="bi bi-box-arrow-left"></i>
+            </a>
           </li>
         </ul>
       </div>
@@ -26,16 +30,23 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex'
   export default {
-    props: {
-    },
     computed: {
+      ...mapGetters('storage', ['currentUser']),
     },
     methods: {
-    },
+      ...mapMutations('storage', ['setCurrentUser']),
+      logout() {
+        this.setCurrentUser(null);
+        localStorage.removeItem('current-user-blog')
+      }
+    }
   }
 </script>
 
 <style scoped>
-
+  .nav-links {
+    width: 100%;
+  }
 </style>

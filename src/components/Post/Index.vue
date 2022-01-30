@@ -1,18 +1,18 @@
 <template>
   <section>
     <div class="container">
-      <div class="row mt-3" @change="onSearch" >
+      <div class="row mt-3" @input="onSearch" >
         <div class="d-flex justify-content-between">
           <h4 class="text-dark">Filtrar Posts</h4>
           <router-link class="btn btn-outline-primary" to="/post/new">Criar Post</router-link>
         </div>
-        <div class="col-md-3 col-sm-6">
-          <label for="name" class="form-label">Titulo</label>
-          <input v-model="formData.title" type="text" class="form-control" id="name" aria-describedby="name">
+        <div class="col-md-1 col-sm-2">
+          <label for="email" class="form-label">ID</label>
+          <input  v-model="formData.id" type="text" class="form-control" id="email" aria-describedby="email">
         </div>
-        <div class="col-md-3 col-sm-6">
-          <label for="email" class="form-label">Texto</label>
-          <input  v-model="formData.body" type="text" class="form-control" id="email" aria-describedby="email">
+        <div class="col-md-6 col-sm-6">
+          <label for="name" class="form-label">Título</label>
+          <input v-model="formData.title" type="text" class="form-control" id="name" aria-describedby="name">
         </div>
       </div>
       <div class="row mt-3">
@@ -42,7 +42,7 @@ export default {
       timeout: null,
       formData: {
         title: '',
-        body: '',
+        id: '',
       }
     }
   },
@@ -50,7 +50,7 @@ export default {
     msg: String
   },
   created() {
-    this.getPosts({ offset:0, size: 5 });
+    this.getPosts();
   },
   unmounted() {
     this.resetPostState();
