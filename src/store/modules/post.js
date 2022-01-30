@@ -47,17 +47,17 @@ const actions = {
         throw error;
       });
   },
-  createPost({ commit }, data) {
+  getPostsByUser({ commit }, { userId, params }) {
+    commit("resetPostState", true);
     commit("setLoading", true);
     postApi
-      .createPost(data)
+      .getPostsByUser(userId, params)
       .then((data) => {
         commit("setLoading", false);
-        commit("setPost", data.data);
+        if (data) commit("setPost", data.data);
       })
       .catch((error) => {
         commit("setLoading", false);
-        commit("setError", error.response?.data?.data);
         throw error;
       });
   },
@@ -70,7 +70,7 @@ const actions = {
         commit("setLoading", false);
       })
       .catch((error) => {
-        commit("setLoading", true);
+        commit("setLoading", false);
         commit("setError", error.response?.data?.data);
         throw error;
       });

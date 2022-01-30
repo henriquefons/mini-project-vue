@@ -2,18 +2,18 @@
 import api from "../store/api";
 
 export default {
-  getPosts(data) {
+  getPosts(params) {
     return new Promise((resolve, reject) => {
       api
-        .get('/posts', { params: data || {} })
+        .get('/posts', { params: params || {} })
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });
   },
-  createPost(data) {
+  getPostsByUser(userId, params) {
     return new Promise((resolve, reject) => {
       api
-        .post('/posts', data)
+        .get(`/users/${userId}/posts`, { params: params || {} })
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });

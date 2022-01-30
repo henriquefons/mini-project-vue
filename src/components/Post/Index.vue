@@ -1,18 +1,25 @@
 <template>
   <section>
     <div class="container">
-      <div class="row mt-3" @input="onSearch" >
+      <div class="row mt-3" @input="onSearch">
         <div class="d-flex justify-content-between">
           <h4 class="text-dark">Filtrar Posts</h4>
-          <router-link class="btn btn-outline-primary" to="/post/new">Criar Post</router-link>
+          <router-link v-if="currentUser" class="btn btn-outline-primary" to="/post/new">Criar Post</router-link>
         </div>
         <div class="col-md-1 col-sm-2">
           <label for="email" class="form-label">ID</label>
-          <input  v-model="formData.id" type="text" class="form-control" id="email" aria-describedby="email">
+          <input v-model="formData.id" type="text" class="form-control" id="email" aria-describedby="email">
         </div>
         <div class="col-md-6 col-sm-6">
           <label for="name" class="form-label">Título</label>
           <input v-model="formData.title" type="text" class="form-control" id="name" aria-describedby="name">
+        </div>
+        <div class="col-md-3 col-sm-4 form-check" v-if="currentUser">
+          <br>
+          <input v-model="postsByUser" class="form-check-input" type="checkbox" id="postsByUser">
+          <label class="form-check-label" for="postsByUser">
+            {{ !postsByUser ? 'Mostrar meus Posts' : 'Esconder meus Posts'}}
+          </label>
         </div>
       </div>
       <div class="row mt-3">
@@ -40,6 +47,7 @@ export default {
   data() {
     return {
       timeout: null,
+      postsByUser: false,
       formData: {
         title: '',
         id: '',
@@ -54,14 +62,19 @@ export default {
   },
   computed: {
     ...mapGetters('post', ['loadingPost', 'post']),
+    ...mapGetters('storage', ['currentUser']),
   },
   methods: {
-    ...mapActions('post', ['getPosts']),
+    ...mapActions('post', ['getPosts', 'getPostsByUser']),
     ...mapMutations('post', ['resetPostState']),
     onSearch() {
       if (this.timeout) clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
-        this.getPosts(this.formData)
+        if (this.postsByUser) {
+          this.getPostsByUser({ userId: this.currentUser.id, params: this.formData })
+        } else{
+          this.getPosts(this.formData)
+        }
       }, 700)
     }
   },
