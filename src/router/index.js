@@ -17,7 +17,7 @@ const routes = [
   { path: "/user/edit/:id", component: User },
   { path: "/post", component: PostIndex },
   { path: "/post/new", component: Post },
-  { path: "/post/edit/:id", component: Post },
+  { path: "/post/:id", component: Post },
   { path: "/todo", component: TodoIndex },
 ];
 

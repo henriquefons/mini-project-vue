@@ -7,11 +7,15 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav nav-links">
-          <li class="nav-item">
-            <router-link class="nav-link" to="/todo">TODO</router-link>
+          <li class="nav-item" :title="!currentUser && 'Usuário não logado'" @click="!currentUser && warning()">
+            <router-link :class="!currentUser && 'disabled'" class="nav-link" to="/todo">
+              TODO
+            </router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/post">Postagens</router-link>
+            <router-link class="nav-link" to="/post">
+              Postagens
+            </router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/user">Usuários</router-link>
@@ -20,7 +24,7 @@
           <li class="nav-item d-flex" v-if="currentUser">
             <a class="nav-link text-danger text-nowrap">{{currentUser.name}}</a>
             <a role="button" class="nav-link text-danger" @click.prevent="logout">
-              <i title="Sair com usuário" class="bi bi-box-arrow-left"></i>
+              <i title="Logout" class="bi bi-box-arrow-left"></i>
             </a>
           </li>
         </ul>
@@ -40,6 +44,9 @@ import { mapGetters, mapMutations } from 'vuex'
       logout() {
         this.setCurrentUser(null);
         localStorage.removeItem('current-user-blog')
+      },
+      warning() {
+        alert('Escolha um usuário para continuar')
       }
     }
   }

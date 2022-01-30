@@ -55,13 +55,13 @@
                 <th scope="row">{{ u.id }}</th>
                 <td>{{ u.name }}</td>
                 <td>{{ u.email }}</td>
-                <td>{{ u.gender }}</td>
+                <td>{{ u.gender === 'male' ? 'Masculino' : 'Feminino' }}</td>
                 <td>{{ u.status === 'active' ? 'Ativo' : 'Inativo' }}</td>
                 <td>
                   <router-link title="Editar usuário" class="btn-sm btn-outline-secondary" :to="`/user/edit/${u.id}`">
                     <i class="bi bi-pencil-fill"></i>
                   </router-link>
-                  <a title="Logar com usuário" class="btn-sm btn-outline-success" @click="signIn(u)">
+                  <a title="Logar com usuário" class="btn-sm btn-outline-success" @click="createCurrentUser(u)">
                     <i class="bi bi-box-arrow-right"></i>
                   </a>
                 </td>
@@ -106,12 +106,6 @@ export default {
       this.timeout = setTimeout(() => {
         this.getUsers(this.formData)
       }, 700)
-    },
-    signIn(user) {
-      if (!user) return alert('aconteceu um error')
-      localStorage.setItem('current-user-blog', JSON.stringify(user))
-      this.createCurrentUser(user)
-      alert(`Logado com o usuário ${user.name}`)
     },
   },
 }

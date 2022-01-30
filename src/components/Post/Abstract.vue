@@ -2,7 +2,7 @@
   <div class="post border p-3 mt-3">
     <span title="Exitem comentários no Post!" class="float-end badge bg-warning text-dark">Comentário</span>
     <h5 class="mt-0 text-truncate body-title">
-      <router-link :to="`/post/edit/${post.id}`">
+      <router-link :to="`/post/${post.id}`">
         #{{ post.id + ' ' + post.title }}
       </router-link>
     </h5>

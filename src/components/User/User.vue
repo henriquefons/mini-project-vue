@@ -37,7 +37,11 @@
             <div v-if="errors.status" class="invalid-feedback">{{errors.status}}</div>
           </div>
           <div v-if="user" class="alert alert-success" role="alert">
-            Usuário salvo com sucesso!
+            Usuário {{user.name}} {{ isEdit ? 'editado' : 'salvo' }} com sucesso!
+            <br>
+            <a role="button" class="link-success" @click="createCurrentUser(user)">
+              Logar como usuário
+            </a>
           </div>
           <div class="col-12 d-flex justify-content-between mt-3">
             <router-link class="btn btn-danger" to="/user">Cancelar</router-link>
@@ -99,12 +103,18 @@ export default {
   },
   methods: {
     ...mapActions('user', ['createUser', 'getUsers', 'editUser']),
+    ...mapActions('storage', ['createCurrentUser']),
     ...mapMutations('user', ['resetUserState']),
     onSubmit() {
       const data = { ...this.formData, status: this.formData.status ? 'active' : 'inactive' };
       this.isEdit ? this.editUser(data) : this.createUser(data);
     },
   },
+  watch: {
+    'user.id'(newValue) {
+      if(newValue) alert('Usuário salvo com suceso!')
+    }
+  }
 }
 </script>
 
