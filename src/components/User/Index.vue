@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container">
-      <div class="row mt-3" @change="onSearch" >
+      <div class="row mt-3" @input="onSearch" >
         <div class="d-flex justify-content-between">
           <h4 class="text-dark">Filtrar usuários</h4>
           <router-link class="btn btn-outline-primary" to="/user/new">Adicionar Usuário</router-link>
@@ -84,9 +84,6 @@ export default {
         status: '',
       }
     }
-  },
-  props: {
-    msg: String
   },
   created() {
     this.getUsers();

@@ -50,7 +50,7 @@ export default {
     msg: String
   },
   created() {
-    this.getPosts();
+    this.getPosts({ offset:0, size: 5 });
   },
   unmounted() {
     this.resetPostState();
