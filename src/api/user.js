@@ -1,10 +1,10 @@
 import api from "../store/api";
 
 export default {
-  getUsers() {
+  getUsers(data) {
     return new Promise((resolve, reject) => {
       api
-        .get('/users')
+        .get('/users', { params: data || {} })
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });
@@ -17,10 +17,10 @@ export default {
         .catch((error) => reject(error));
     });
   },
-  editUser(id, data) {
+  editUser(data) {
     return new Promise((resolve, reject) => {
       api
-        .put(`/users/${id}`, data)
+        .put(`/users/${data.id}`, data)
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });

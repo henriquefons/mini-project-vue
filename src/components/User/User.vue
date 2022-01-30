@@ -1,9 +1,14 @@
 <template>
   <section>
     <div class="container">
-      <form @submit.prevent="onSubmit">
+      <div class="d-flex justify-content-center mt-5" v-if="loadingEdit">
+        <div class="spinner-border text-dark" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <form @submit.prevent="onSubmit" v-if="isEdit ? formData.id : formData">
         <div class="row mt-3 new-user-form">
-          <h4 class="text-dark m-0">Novo usuário</h4>
+          <h4 class="text-dark m-0">{{ isEdit ? 'Editar' : 'Novo' }} usuário</h4>
           <div class="col-md-6 col-sm-12">
             <label for="name" class="form-label">Nome</label>
             <input :class="errors.name && 'is-invalid'"  v-model="formData.name" required type="text" class="form-control" id="name" aria-describedby="name">
@@ -35,7 +40,7 @@
             Usuário salvo com sucesso!
           </div>
           <div class="col-12 d-flex justify-content-between mt-3">
-            <router-link class="btn btn-danger" to="/user/new">Cancelar</router-link>
+            <router-link class="btn btn-danger" to="/user">Cancelar</router-link>
             <button :disabled="loadingUser" type="submit" class="btn btn-success">
               {{ loadingUser ? 'Salvando' : 'Salvar' }}
             </button>
@@ -47,10 +52,12 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import apiUser from '../../api/user'
 export default {
   data() {
     return {
+      loadingEdit: false,
       formData: {
         name: '',
         email: '',
@@ -59,7 +66,21 @@ export default {
       }
     }
   },
+  created() {
+    if (this.$route.params.id) {
+      this.loadingEdit = true;
+      apiUser.getUsers({ id: this.$route.params.id })
+        .then(data => {
+          this.loadingEdit = false;
+          if(data) {
+            const user = data.data[0]
+            this.formData = { ...user, status: user.status === 'active' }
+          } 
+        })
+    }
+  },
   unmounted() {
+    console.log('sai')
     this.resetUserState();
   },
   computed: {
@@ -72,15 +93,17 @@ export default {
         return acc;
       }, {})
       return error;
+    },
+    isEdit() {
+      return !!this.$route.params.id
     }
   },
   methods: {
-    ...mapActions('user', ['createUser']),
+    ...mapActions('user', ['createUser', 'getUsers', 'editUser']),
     ...mapMutations('user', ['resetUserState']),
     onSubmit() {
       const data = { ...this.formData, status: this.formData.status ? 'active' : 'inactive' };
-      console.log(data);
-      this.createUser(data);
+      this.isEdit ? this.editUser(data) : this.createUser(data);
     },
   },
 }

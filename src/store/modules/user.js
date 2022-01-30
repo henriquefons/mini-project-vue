@@ -17,15 +17,17 @@ const getters = {
 };
 
 const actions = {
-  getUsers({ commit }) {
+  getUsers({ commit }, data) {
+    commit("resetUserState");
     commit("setLoading", true);
     userApi
-      .getUsers()
+      .getUsers(data)
       .then((data) => {
         commit("setLoading", false);
         if (data) commit("setUser", data.data);
       })
       .catch((error) => {
+        commit("setLoading", false);
         throw error;
       });
   },
@@ -44,15 +46,17 @@ const actions = {
         throw error;
       });
   },
-  editUser({ commit }, { id, data }) {
+  editUser({ commit }, data) {
     commit("setLoading", true);
     userApi
-      .editUser(id, data)
+      .editUser(data)
       .then((data) => {
+        commit("setUser", data.data);
         commit("setLoading", false);
-        console.log(data);
       })
       .catch((error) => {
+        commit("setLoading", true);
+        commit("setError", error.response?.data?.data);
         throw error;
       });
   },

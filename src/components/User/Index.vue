@@ -1,26 +1,34 @@
 <template>
   <section>
     <div class="container">
-      <div class="row mt-3">
+      <div class="row mt-3" @change="onSearch" >
         <div class="d-flex justify-content-between">
           <h4 class="text-dark">Filtrar usuários</h4>
           <router-link class="btn btn-outline-primary" to="/user/new">Adicionar Usuário</router-link>
         </div>
         <div class="col-md-3 col-sm-6">
           <label for="name" class="form-label">Nome</label>
-          <input type="text" class="form-control" id="name" aria-describedby="name">
+          <input v-model="formData.name" type="text" class="form-control" id="name" aria-describedby="name">
         </div>
         <div class="col-md-3 col-sm-6">
           <label for="email" class="form-label">Email</label>
-          <input type="text" class="form-control" id="email" aria-describedby="email">
+          <input  v-model="formData.email" type="text" class="form-control" id="email" aria-describedby="email">
         </div>
         <div class="col-md-3 col-sm-6">
           <label for="gender" class="form-label">Genêro</label>
-          <input type="text" class="form-control" id="gender" aria-describedby="gender">
+          <select v-model="formData.gender" required id="gender" class="form-select" aria-label="Selecione um genêro">
+            <option selected value="">Filtrar por genêro</option>
+            <option value="female">Feminino</option>
+            <option value="male">Masculino</option>
+          </select>
         </div>
         <div class="col-md-3 col-sm-6">
-          <label for="status" class="form-label">Status</label>
-          <input type="text" class="form-control" id="status" aria-describedby="status">
+          <label for="status" class="form-label">Genêro</label>
+          <select v-model="formData.status" required id="status" class="form-select" aria-label="Selecione um genêro">
+            <option selected value="">Filtrar por Status</option>
+            <option value="active">Ativo</option>
+            <option value="inactive">Inativo</option>
+          </select>
         </div>
       </div>
       <div class="row mt-3">
@@ -50,7 +58,7 @@
                 <td>{{ u.gender }}</td>
                 <td>{{ u.status === 'active' ? 'Ativo' : 'Inativo' }}</td>
                 <td>
-                  <router-link class="btn-sm btn-outline-Primary" :to="`/user/new/${u.id}`">
+                  <router-link class="btn-sm btn-outline-Primary" :to="`/user/edit/${u.id}`">
                     <i class="bi bi-pencil-fill"></i>
                   </router-link>
                 </td>
@@ -66,6 +74,17 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
+  data() {
+    return {
+      timeout: null,
+      formData: {
+        name: '',
+        email: '',
+        gender: '',
+        status: '',
+      }
+    }
+  },
   props: {
     msg: String
   },
@@ -81,6 +100,12 @@ export default {
   methods: {
     ...mapActions('user', ['getUsers']),
     ...mapMutations('user', ['resetUserState']),
+    onSearch() {
+      if (this.timeout) clearTimeout(this.timeout)
+      this.timeout = setTimeout(() => {
+        this.getUsers(this.formData)
+      }, 700)
+    }
   },
 }
 </script>
