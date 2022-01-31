@@ -19,28 +19,28 @@ const getters = {
 };
 
 const actions = {
-  getComments({ commit }, data) {
-    commit("resetCommentState", true);
+  getComments({ commit }, { postId, params }) {
     commit("setLoading", true);
     commentApi
-      .getComments(data)
+      .getComments(postId, params)
       .then((data) => {
         commit("setLoading", false);
-        if (data) commit("setComment", data.data);
+        commit("setComment", data.data);
       })
       .catch((error) => {
         commit("setLoading", false);
+        commit("setError", error.response?.data?.data);
         throw error;
       });
   },
-  createComment({ commit }, data) {
+  createComment({ commit, state }, data) {
+    if (state.error) commit("setError", false);
     commit("setLoading", true);
     commentApi
       .createComment(data)
       .then((data) => {
-        console.log(data)
-        commit("setComment", data.data);
         commit("setLoading", false);
+        if (data?.data) commit("addComment", data.data);
       })
       .catch((error) => {
         commit("setLoading", false);
@@ -56,6 +56,9 @@ const mutations = {
   },
   setComment(state, comment) {
     return (state.comments = comment);
+  },
+  addComment(state, comment) {
+    return (state.comments.unshift(comment));
   },
   setError(state, error) {
     return (state.error = error);

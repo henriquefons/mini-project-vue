@@ -8,7 +8,7 @@
     <div class="container" v-if="!loadingPost && post">
       <h4 class="text-dark mt-3">{{post.title}}</h4>
       <p class="fw-light body-post">{{post.body}}</p>
-      <Comments :postId="post.id" :commentsId="post?.comments_id"  />
+      <Comments :postId="this.$route.params.id" />
     </div>
   </section>
 </template>

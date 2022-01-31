@@ -2,10 +2,10 @@
 import api from "../store/api";
 
 export default {
-  getComments(data) {
+  getComments(postId, params) {
     return new Promise((resolve, reject) => {
       api
-        .get('/comments', { params: data || {} })
+        .get(`/posts/${postId}/comments`, { params: params || {} })
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });
