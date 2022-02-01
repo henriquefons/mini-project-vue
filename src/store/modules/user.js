@@ -3,6 +3,7 @@ import userApi from "../../api/user";
 const getDefaultState = () => {
   return {
     user: null,
+    pagination: null,
     currentUser: null,
     error: null,
   };
@@ -15,6 +16,7 @@ const state = {
 
 const getters = {
   user: (state) => state.user,
+  pagination: (state) => state.pagination,
   errorUser: (state) => state.error,
   loadingUser: (state) => state.loading,
 };
@@ -27,7 +29,7 @@ const actions = {
       .getUsers(data)
       .then((data) => {
         commit("setLoading", false);
-        if (data) commit("setUser", data.data);
+        commit("setUser", data);
       })
       .catch((error) => {
         commit("setLoading", false);
@@ -41,7 +43,7 @@ const actions = {
       .createUser(data)
       .then((data) => {
         commit("setLoading", false);
-        commit("setUser", data.data);
+        commit("setUser", data);
       })
       .catch((error) => {
         commit("setLoading", false);
@@ -54,7 +56,7 @@ const actions = {
     userApi
       .editUser(data)
       .then((data) => {
-        commit("setUser", data.data);
+        commit("setUser", data);
         commit("setLoading", false);
       })
       .catch((error) => {
@@ -70,7 +72,8 @@ const mutations = {
     return Object.assign(state, getDefaultState());
   },
   setUser(state, user) {
-    return (state.user = user);
+    state.pagination = user.meta?.pagination;
+    return (state.user = user.data);
   },
   setError(state, error) {
     return (state.error = error);

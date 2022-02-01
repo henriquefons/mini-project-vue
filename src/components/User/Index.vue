@@ -68,6 +68,17 @@
               </tr>
             </tbody>
           </table>
+          <div class="overflow-auto">
+            <b-pagination
+              v-model="currentPage"
+              :total-rows="10"
+              :per-page="4"
+              first-text="First"
+              prev-text="Prev"
+              next-text="Next"
+              last-text="Last"
+            ></b-pagination>
+          </div>
         </div>
       </div>  
     </div>
@@ -79,6 +90,7 @@ import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   data() {
     return {
+      currentPage: '',
       timeout: null,
       formData: {
         name: '',
@@ -95,7 +107,7 @@ export default {
     this.resetUserState();
   },
   computed: {
-    ...mapGetters('user', ['loadingUser', 'user']),
+    ...mapGetters('user', ['loadingUser', 'user', 'pagination']),
   },
   methods: {
     ...mapActions('user', ['getUsers']),
