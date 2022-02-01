@@ -6,6 +6,7 @@ import UserIndex from "../components/User/Index.vue";
 import User from "../components/User/User.vue";
 
 import PostIndex from "../components/Post/Index.vue";
+import Show from "../components/Post/Show.vue";
 import Post from "../components/Post/Post.vue";
 
 import TodoIndex from "../components/Todo/Index.vue";
@@ -17,7 +18,7 @@ const routes = [
   { path: "/user/edit/:id", component: User },
   { path: "/post", component: PostIndex },
   { path: "/post/new", component: Post },
-  { path: "/post/:id", component: Post },
+  { path: "/post/:id", component: Show },
   { path: "/todo", component: TodoIndex },
 ];
 
