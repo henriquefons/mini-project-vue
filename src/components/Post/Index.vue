@@ -1,10 +1,19 @@
 <template>
   <section>
     <div class="container">
+      <div v-if="!currentUser" class="alert alert-warning mt-3" role="alert">
+        Para criar um Post, favor entrar com um usuário
+        <br>
+        <router-link role="button" class="link-dark" :to="`/user`">
+          Entrar com usuário
+        </router-link>
+      </div>
       <div class="row mt-3" @input="onSearch">
         <div class="d-flex justify-content-between">
           <h4 class="text-dark">Filtrar Posts</h4>
-          <router-link v-if="currentUser" class="btn btn-outline-primary" to="/post/new">Criar Post</router-link>
+          <router-link v-if="currentUser" class="btn btn-outline-primary" to="/post/new">
+            Criar Post
+          </router-link>
         </div>
         <div class="col-md-1 col-sm-2">
           <label for="email" class="form-label">ID</label>
@@ -32,6 +41,12 @@
         <div class="col-12" v-if="post">
           <Abstract v-for="p in post" :key="p.id" :post="p" />
         </div>
+        <div class="col-12" v-if="!post.length">
+          Não foi encontrado Posts
+        </div>
+        <div class="col-12" v-if="!post.length && currentUser">
+          Deseja <router-link v-if="currentUser"  class="text-primary text-decoration-none" to="/post/new">criar um post? </router-link> 
+        </div>
       </div>  
     </div>
   </section>
@@ -55,7 +70,12 @@ export default {
     }
   },
   created() {
-    this.getPosts();
+    if (this.currentUser) { // se usuario tiver logado, mostra só seus posts
+      this.getPostsByUser({ userId: this.currentUser.id });
+      this.postsByUser = true;
+    } else {
+      this.getPosts();
+    }
   },
   unmounted() {
     this.resetPostState();
