@@ -11,7 +11,7 @@
           <h4 class="text-dark m-0">{{ isEdit ? 'Editar' : 'Novo' }} usuário</h4>
           <div class="col-md-6 col-sm-12">
             <label for="name" class="form-label">Nome</label>
-            <input :class="errors.name && 'is-invalid'"  v-model="formData.name" required type="text" class="form-control" id="name" aria-describedby="name">
+            <input :class="errors.name && 'is-invalid'" v-model="formData.name" required type="text" class="form-control" id="name" aria-describedby="name">
             <div v-if="errors.name" class="invalid-feedback">{{errors.name}}</div>
           </div>
           <div class="col-md-6 col-sm-12">

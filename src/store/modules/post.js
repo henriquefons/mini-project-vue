@@ -47,6 +47,21 @@ const actions = {
         throw error;
       });
   },
+  createPost({ commit }, data) {
+    commit("resetPostState");
+    commit("setLoading", true);
+    postApi
+      .createPost(data)
+      .then((data) => {
+        commit("setLoading", false);
+        commit("setPost", data.data);
+      })
+      .catch((error) => {
+        commit("setLoading", false);
+        commit("setError", error.response?.data?.data);
+        throw error;
+      });
+  },
   getPostsByUser({ commit }, { userId, params }) {
     commit("resetPostState", true);
     commit("setLoading", true);

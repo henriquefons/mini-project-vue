@@ -18,6 +18,14 @@ export default {
         .catch((error) => reject(error));
     });
   },
+  createPost(data) {
+    return new Promise((resolve, reject) => {
+      api
+        .post(`/users/${data.user_id}/posts`, data)
+        .then((response) => resolve(response.data))
+        .catch((error) => reject(error));
+    });
+  },
   editPost(data) {
     return new Promise((resolve, reject) => {
       api
