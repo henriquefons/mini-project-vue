@@ -22,7 +22,7 @@
           </li>
           <div class="w-100">Flex item</div>
           <li class="nav-item d-flex" v-if="currentUser">
-            <a class="nav-link text-danger text-nowrap">{{currentUser.name}}</a>
+            <router-link role="button" :to="`/user/edit/${currentUser.id}`" class="nav-link text-danger text-nowrap">{{currentUser.name}}</router-link>
             <a role="button" class="nav-link text-danger" @click.prevent="logout">
               <i title="Logout" class="bi bi-box-arrow-left"></i>
             </a>

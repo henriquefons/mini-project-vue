@@ -41,10 +41,10 @@
         <div class="col-12" v-if="post">
           <Abstract v-for="p in post" :key="p.id" :post="p" />
         </div>
-        <div class="col-12" v-if="!post.length">
+        <div class="col-12" v-if="!post?.length">
           Não foi encontrado Posts
         </div>
-        <div class="col-12" v-if="!post.length && currentUser">
+        <div class="col-12" v-if="!post?.length && currentUser">
           Deseja <router-link v-if="currentUser"  class="text-primary text-decoration-none" to="/post/new">criar um post? </router-link> 
         </div>
       </div>  

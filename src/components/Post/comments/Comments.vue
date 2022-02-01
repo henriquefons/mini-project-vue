@@ -18,13 +18,26 @@
       </div>
     </div>
     <label for="comment" class="form-label">Adicionar comentário</label>
-    <textarea :class="errors.body && 'is-invalid'" v-model="comment" rows="2" type="string" class="form-control" id="comment"></textarea>
+    <textarea 
+      :disabled="currentUser?.status === 'inactive'"
+      :title="currentUser?.status === 'inactive' ? 'Usuário inativo, não é possivel comentar' : ''"
+      :class="errors.body && 'is-invalid'"
+      v-model="comment" rows="2"
+      type="string"
+      class="form-control"
+      id="comment" 
+    />
     <div v-if="errors.body" class="invalid-feedback">{{errors.body}}</div>
     <div class="col-12 d-flex justify-content-between align-items-center mt-3">
       <router-link class="btn btn-warning" to="/post">Voltar</router-link>
-      <button :disabled="loadingComment" @click="newComment()" class="btn btn-secondary float-end mt-2">
-      {{ loadingComment ? 'Comentando' : 'Comentar'}}
-    </button>
+      <span :title="currentUser?.status === 'inactive' ? 'Usuário inativo, não é possivel comentar' : ''">
+        <button
+          :disabled="loadingComment || currentUser?.status === 'inactive'" @click="newComment()"
+          class="btn btn-secondary float-end mt-2"
+        >
+          {{ loadingComment ? 'Comentando' : 'Comentar'}}
+        </button>
+      </span >
     </div>
   </div>
 </template>

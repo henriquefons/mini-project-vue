@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container">
-      <div v-if="currentUser.status === 'inactive'" class="alert alert-warning mt-3" role="alert">
+      <div v-if="currentUser?.status === 'inactive'" class="alert alert-warning mt-3" role="alert">
         O usuário está inativo, não é possivel criar post!
         <br>
         <router-link role="button" class="link-dark" :to="`/user/edit/${currentUser.id}`">
@@ -20,18 +20,13 @@
           <textarea :disabled="currentUser.status === 'inactive'" required :class="errors.body && 'is-invalid'" v-model="formData.body" rows="3" type="string" class="form-control" id="body" />
           <div v-if="errors.body" class="invalid-feedback">{{errors.body}}</div>
         </div>
-        <div v-if="post" class="alert alert-success mt-3" role="alert">
-          Post salvo com sucesso!
-          <br>
-          <router-link role="button" class="link-success" :to="`/post/${post.id}`">
-            Ver meu Post
-          </router-link>
-        </div>
         <div class="col-12 d-flex justify-content-between mt-3">
           <router-link class="btn btn-danger" to="/post">Cancelar</router-link>
-          <button :disabled="loadingPost || currentUser.status === 'inactive'" type="submit" class="btn btn-success">
-            {{ loadingPost ? 'Salvando' : 'Salvar' }}
-          </button>
+          <span :title="currentUser.status === 'inactive' ? 'Usuário inativo, não é possivel salvar' : ''">
+            <button :disabled="loadingPost || currentUser.status === 'inactive'" type="submit" class="btn btn-success">
+              {{ loadingPost ? 'Salvando' : 'Salvar' }}
+            </button>
+          </span>
         </div>
       </form>
       <div v-if="!currentUser" class="alert alert-danger mt-3" role="alert">
@@ -85,7 +80,10 @@ export default {
   },
   watch: {
     'post.id'(newValue) {
-      if(newValue) alert('Post salvo com suceso!')
+      if(newValue) {
+        alert('Post salvo com suceso!')
+        this.$router.push('/post') 
+      } 
     }
   }
 }
