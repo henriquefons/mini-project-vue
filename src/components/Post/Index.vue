@@ -40,6 +40,33 @@
         </div>
         <div class="col-12" v-if="post">
           <Abstract v-for="p in post" :key="p.id" :post="p" />
+          <nav aria-label="Pagination" v-if="pagination">
+            <ul class="flex-wrap pagination justify-content-center">
+              <li 
+                :class="!pagination.links.previous && 'disabled'" 
+                class="page-item"
+                @click.prevent="onPage(currentPage-1)"
+              >
+                <a class="page-link">Anterior</a>
+              </li>
+              <template v-for="x in limitPagination(currentPage, pagination.pages)" :key="x" >
+                <li 
+                  @click.prevent="onPage(x)" 
+                  class="page-item"
+                  :class="currentPage === x && 'active'"
+                >
+                  <a class="page-link" href="#">{{x}}</a>
+                </li>
+              </template>
+              <li 
+                :class="currentPage >= pagination.pages  && 'disabled'" 
+                class="page-item"
+                @click.prevent="onPage(currentPage+1)"
+              >
+                <a class="page-link" href="#">Próximo</a>
+              </li>
+            </ul>
+          </nav>
         </div>
         <div class="col-12" v-if="!post?.length">
           Não foi encontrado Posts
@@ -55,6 +82,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import Abstract from './Abstract.vue';
+import { limitPagination } from '../../store/utils'
 export default {
   components: { 
     Abstract
@@ -74,29 +102,38 @@ export default {
       this.getPostsByUser({ userId: this.currentUser.id });
       this.postsByUser = true;
     } else {
-      this.getPosts();
+      this.getPosts({ page: this.currentPage });
     }
   },
   unmounted() {
     this.resetPostState();
   },
   computed: {
-    ...mapGetters('post', ['loadingPost', 'post']),
+    ...mapGetters('post', ['loadingPost', 'post', 'pagination']),
     ...mapGetters('storage', ['currentUser']),
+    currentPage() {
+      return Number(this.$route.query.page) || 1;
+    },
   },
   methods: {
     ...mapActions('post', ['getPosts', 'getPostsByUser']),
     ...mapMutations('post', ['resetPostState']),
-    onSearch() {
+    limitPagination,
+    onSearch(delay = 700, page = 1) {
+      if (page === 1) this.$router.push({path: '/post', query: { page: 1 }}); 
       if (this.timeout) clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
         if (this.postsByUser) {
-          this.getPostsByUser({ userId: this.currentUser.id, params: this.formData })
+          this.getPostsByUser({ userId: this.currentUser.id, params: { ...this.formData, page }})
         } else{
-          this.getPosts(this.formData)
+          this.getPosts({...this.formData, page })
         }
-      }, 700)
-    }
+      }, delay)
+    },
+    onPage(page) {
+      this.$router.push({path: '/post', query: { page }});
+      this.onSearch(0, page)
+    },
   },
 }
 </script>

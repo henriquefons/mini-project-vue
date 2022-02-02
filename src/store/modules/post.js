@@ -3,6 +3,7 @@ import postApi from "../../api/post";
 const getDefaultState = () => {
   return {
     post: null,
+    pagination: null,
     error: null,
   };
 };
@@ -14,6 +15,7 @@ const state = {
 
 const getters = {
   post: (state) => state.post,
+  pagination: (state) => state.pagination,
   errorPost: (state) => state.error,
   loadingPost: (state) => state.loading,
 };
@@ -27,7 +29,7 @@ const actions = {
       .then((data) => {
         console.log(data)
         commit("setLoading", false);
-        if (data) commit("setPost", data.data);
+        commit("setPost", data);
       })
       .catch((error) => {
         commit("setLoading", false);
@@ -40,7 +42,7 @@ const actions = {
       .getPosts(data)
       .then((data) => {
         commit("setLoading", false);
-        if (data) commit("setPost", data.data[0]);
+        commit("setPostById", data);
       })
       .catch((error) => {
         commit("setLoading", false);
@@ -97,7 +99,12 @@ const mutations = {
     return Object.assign(state, getDefaultState());
   },
   setPost(state, post) {
-    return (state.post = post);
+    state.pagination = post.meta?.pagination;
+    return (state.post = post.data);
+  },
+  setPostById(state, post) {
+    state.pagination = post.meta?.pagination;
+    return (state.post = post.data[0]);
   },
   setError(state, error) {
     return (state.error = error);
