@@ -68,33 +68,16 @@
               </tr>
             </tbody>
           </table>
-          <nav aria-label="Pagination" v-if="pagination">
-            <ul class="flex-wrap pagination justify-content-center">
-              <li 
-                :class="!pagination.links.previous && 'disabled'" 
-                class="page-item"
-                @click.prevent="onPage(currentPage-1)"
-              >
-                <a class="page-link">Anterior</a>
-              </li>
-              <template v-for="x in calculateAround(currentPage, pagination.pages)" :key="x" >
-                <li 
-                  @click.prevent="onPage(x)" 
-                  class="page-item"
-                  :class="currentPage === x && 'active'"
-                >
-                  <a class="page-link" href="#">{{x}}</a>
-                </li>
-              </template>
-              <li 
-                :class="currentPage >= pagination.pages  && 'disabled'" 
-                class="page-item"
-                @click.prevent="onPage(currentPage+1)"
-              >
-                <a class="page-link" href="#">Próximo</a>
-              </li>
-            </ul>
-          </nav>
+          <div class="d-flex justify-content-center">
+              <pagination
+                v-if="pagination" 
+                v-model="page" 
+                :records="pagination.pages" 
+                :per-page="10" 
+                @paginate="onPage"
+                :options="{ hideCount: true }"
+              />
+          </div>
         </div>
       </div>  
     </div>
@@ -103,11 +86,11 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { calculateAround } from '../../store/utils'
 export default {
   data() {
     return {
       timeout: null,
+      page: 2,
       formData: {
         name: '',
         email: '',
@@ -141,7 +124,6 @@ export default {
     ...mapActions('user', ['getUsers']),
     ...mapActions('storage', ['createCurrentUser']),
     ...mapMutations('user', ['resetUserState']),
-    calculateAround,
     onSearch(delay = 700, page = 1) {
       if (page === 1) this.$router.push({path: '/user', query: { page: 1 }}); 
       if (this.timeout) clearTimeout(this.timeout)
