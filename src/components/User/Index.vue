@@ -68,17 +68,33 @@
               </tr>
             </tbody>
           </table>
-          <div class="overflow-auto">
-            <b-pagination
-              v-model="currentPage"
-              :total-rows="10"
-              :per-page="4"
-              first-text="First"
-              prev-text="Prev"
-              next-text="Next"
-              last-text="Last"
-            ></b-pagination>
-          </div>
+          <nav aria-label="Pagination" v-if="pagination">
+            <ul class="flex-wrap pagination justify-content-center">
+              <li 
+                :class="!pagination.links.previous && 'disabled'" 
+                class="page-item"
+                @click.prevent="onPage(currentPage-1)"
+              >
+                <a class="page-link">Anterior</a>
+              </li>
+              <template v-for="x in calculateAround(currentPage, pagination.pages)" :key="x" >
+                <li 
+                  @click.prevent="onPage(x)" 
+                  class="page-item"
+                  :class="currentPage === x && 'active'"
+                >
+                  <a class="page-link" href="#">{{x}}</a>
+                </li>
+              </template>
+              <li 
+                :class="currentPage >= pagination.pages  && 'disabled'" 
+                class="page-item"
+                @click.prevent="onPage(currentPage+1)"
+              >
+                <a class="page-link" href="#">Próximo</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>  
     </div>
@@ -87,10 +103,10 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { calculateAround } from '../../store/utils'
 export default {
   data() {
     return {
-      currentPage: '',
       timeout: null,
       formData: {
         name: '',
@@ -101,25 +117,43 @@ export default {
     }
   },
   created() {
-    this.getUsers();
+    this.getUsers({ page: this.currentPage });
   },
   unmounted() {
     this.resetUserState();
   },
   computed: {
     ...mapGetters('user', ['loadingUser', 'user', 'pagination']),
+    currentPage() {
+      return Number(this.$route.query.page) || 1;
+    },
+    numbers() {
+      const links = [];
+      const start = Math.floor(this.currentPage / 5) * 5;
+      const end = Math.min(start + 5, this.pagination.pages);
+      for (let i = start; i < end; i++) {
+        links.push(i + 1);
+      }
+      return links;
+    }
   },
   methods: {
     ...mapActions('user', ['getUsers']),
     ...mapActions('storage', ['createCurrentUser']),
     ...mapMutations('user', ['resetUserState']),
-    onSearch() {
+    calculateAround,
+    onSearch(delay = 700, page = 1) {
+      if (page === 1) this.$router.push({path: '/user', query: { page: 1 }}); 
       if (this.timeout) clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {
-        this.getUsers(this.formData)
-      }, 700)
+        this.getUsers({...this.formData, page })
+      }, delay)
     },
-  },
+    onPage(page) {
+      this.$router.push({path: '/user', query: { page }});
+      this.onSearch(0, page)
+    },
+  }, 
 }
 </script>
 

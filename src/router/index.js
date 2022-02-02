@@ -13,7 +13,7 @@ import TodoIndex from "../components/Todo/Index.vue";
 
 const routes = [
   { path: "/", component: Home },
-  { path: "/user", component: UserIndex },
+  { path: "/user", component: UserIndex, query: { page: 1 } },
   { path: "/user/new", component: User },
   { path: "/user/edit/:id", component: User },
   { path: "/post", component: PostIndex },
