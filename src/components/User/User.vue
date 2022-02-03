@@ -78,6 +78,7 @@ export default {
           this.loadingEdit = false;
           if(data) {
             const user = data.data[0]
+            console.log(user)
             this.formData = { ...user, status: user.status === 'active' }
           } 
         })

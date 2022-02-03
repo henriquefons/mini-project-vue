@@ -22,7 +22,7 @@
           </router-link>
         </div>
         <div v-if="currentUser?.status === 'inactive'" class="alert alert-warning mt-3" role="alert">
-          Seu usuário está inativo, não é possivel realizar algumas!
+          Seu usuário está inativo, não é possivel realizar algumas ações!
           <br>
           <router-link role="button" class="link-dark" :to="`/user/edit/${currentUser.id}`">
             Editar usuário

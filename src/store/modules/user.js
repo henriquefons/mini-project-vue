@@ -22,11 +22,11 @@ const getters = {
 };
 
 const actions = {
-  getUsers({ commit }, data) {
+  getUsers({ commit }, params) {
     commit("resetUserState");
     commit("setLoading", true);
     userApi
-      .getUsers(data)
+      .getUsers(params)
       .then((data) => {
         commit("setLoading", false);
         commit("setUser", data);

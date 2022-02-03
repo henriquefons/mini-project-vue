@@ -36,10 +36,10 @@ const actions = {
         throw error;
       });
   },
-  getPostById({ commit }, data) {
+  getPostById({ commit }, id) {
     commit("setLoading", true);
     postApi
-      .getPosts(data)
+      .getPosts({ id })
       .then((data) => {
         commit("setLoading", false);
         commit("setPostById", data);

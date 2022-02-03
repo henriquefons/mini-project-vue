@@ -1,10 +1,10 @@
 import api from "../store/api";
 
 export default {
-  getUsers(data) {
+  getUsers(params) {
     return new Promise((resolve, reject) => {
       api
-        .get('/users', { params: data || {} })
+        .get('/users', { params: params || {} })
         .then((response) => resolve(response.data))
         .catch((error) => reject(error));
     });

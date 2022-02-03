@@ -1,6 +1,8 @@
 <template>
   <div class="post border p-3 mt-3">
-    <span title="Exitem comentários no Post!" class="float-end badge bg-warning text-dark">Comentário</span>
+    <span v-if="existsCommentInPost" title="Exitem comentários no Post!" class="float-end badge bg-warning text-dark">
+      Comentários
+    </span>
     <h5 class="mt-0 text-truncate body-title">
       <router-link :to="`/post/${post.id}`">
         #{{ post.id + ' ' + post.title }}
@@ -11,10 +13,30 @@
 </template>
 
 <script>
+import commentApi from "../../api/comment";
 export default {
+  data() {
+    return {
+      existsCommentInPost: false,
+    }
+  },
+  created() {
+    this.postsWithComments(this.post.id)
+  },
   props: {
     post: Object,
-  }
+  },
+  methods: {
+    postsWithComments(postId) {
+      return commentApi.getComments(postId)
+        .then((data) => {
+          if (data.data.length) {
+            this.existsCommentInPost = true;
+          }
+        })
+        .catch((error) => {throw error});
+    },
+  },
 }
 </script>
 

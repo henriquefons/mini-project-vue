@@ -81,8 +81,8 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import Abstract from './Abstract.vue';
 import { limitPagination } from '../../store/utils'
+import Abstract from './Abstract.vue';
 export default {
   components: { 
     Abstract
@@ -135,6 +135,14 @@ export default {
       this.onSearch(0, page)
     },
   },
+  watch: {
+    'currentUser.id'(newValue) {
+      if (!newValue) {
+        this.postsByUser = false
+        this.onSearch(0)
+      } 
+    },
+  }
 }
 </script>
 
