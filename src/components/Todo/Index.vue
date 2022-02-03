@@ -1,7 +1,14 @@
 <template>
   <section>
     <div class="container">
-      <div class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4 mt-3">
+      <div v-if="!currentUser" class="alert alert-danger mt-3" role="alert">
+        Não é possivel acessar o TODO!
+        <br>
+        <router-link role="button" class="link-dark" :to="`/user`">
+          Logar com um usuário
+        </router-link>
+      </div>
+      <div v-if="currentUser" class="row row-cols-1 row-cols-md-3 row-cols-sm-2 g-4 mt-3">
         <div class="col" v-if="!todos">
           <div class="card text-white todo">
             <div class="card-body add-todo">
@@ -43,7 +50,7 @@ export default {
     Todo
   },
   created() {
-    this.getTodos({ userId: this.currentUser.id })
+    if (this.currentUser) this.getTodos({ userId: this.currentUser.id })
   },
   unmounted() {
     this.resetTodoState();
