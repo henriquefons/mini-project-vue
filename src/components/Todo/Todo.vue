@@ -1,10 +1,13 @@
 <template>
   <div class="col">
     <div class="card text-dark bg-light todo">
-      <div class="card-header">Criar Tarefa</div>
-      <div role="button" class="card-body">
-        <form @submit.prevent="saveTodo" v-if="!todo.id">
-          <input v-model="newTodos[index].title" placeholder="Nome da tarefa" type="text" class="form-control" id="title" aria-describedby="title">
+      <div class="card-header"  >
+        {{todo.id ? 'Visualizar tarefa' : 'Criar tarefa'}}
+      </div>
+      <div class="card-body">
+        <form @submit.prevent="saveTodo(newTodos[index])" v-if="!todo.id">
+          <input required :class="errors.title && 'is-invalid'" v-model="newTodos[index].title" placeholder="Nome da tarefa" type="text" class="form-control" id="title">
+          <div v-if="errors.title" class="invalid-feedback">{{errors.title}}</div>
           <input v-model="newTodos[index].due_on" type="datetime-local" class="mt-2 datetime-todo form-control" id="datetime-local">
           <div class="form-check mt-2">
             <input v-model="newTodos[index].status" type="checkbox" class="form-check-input" id="status">
@@ -15,13 +18,13 @@
               Excluir
             </button>
             <button type="submit" class="btn btn-success">
-              Salvar
+              {{loadingTodo ? 'Salvando' : 'Salvar'}}
             </button>
           </div>
         </form>
         <div v-if="todo.id">
-          <h5 class="card-title">Secondary card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <h5 :class="todo.status === 'completed'  ? 'text-decoration-line-through' : ''" class="card-title">{{todo.title}}</h5>
+          <p :class="todo.status === 'completed'  ? 'text-decoration-line-through' : ''" v-if="todo.due_on" class="card-text">Vencimento: {{todo.due_on}}</p>
         </div>
       </div>
     </div>  
@@ -29,19 +32,35 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
   data() {
     return {
     }
   },
   computed: {
-    ...mapGetters('todo', ['newTodos']),
+    ...mapGetters('storage', ['currentUser']),
+    ...mapGetters('todo', ['newTodos', 'errorTodo', 'loadingTodo']),
+    errors() {
+      if (!this.errorTodo) return {};
+      // converte o array em um objeto
+      const error = this.errorTodo.reduce((acc, { field, message }) => {
+        acc[field] = message;
+        return acc;
+      }, {})
+      return error;
+    },
   },
   methods: {
+    ...mapActions('todo', ['createTodo']),
     ...mapMutations('todo', ['removeNewTodo']),
-    saveTodo() {
-      console.log(this.formData)
+    saveTodo(data) {
+      const formData = {
+        ...data,
+        user_id: this.currentUser.id,
+        status: data.status ? 'completed' : 'pending',
+      }
+      this.createTodo({data: formData, index: this.index})
     }
   },
   props: {
