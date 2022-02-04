@@ -40,7 +40,7 @@
         </div>
         <div class="col-12" v-if="post">
           <Abstract v-for="p in post" :key="p.id" :post="p" />
-          <nav aria-label="Pagination" v-if="pagination">
+          <nav aria-label="Pagination" v-if="pagination && pagination.total">
             <ul class="flex-wrap pagination justify-content-center">
               <li 
                 :class="!pagination.links.previous && 'disabled'" 

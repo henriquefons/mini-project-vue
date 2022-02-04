@@ -68,7 +68,7 @@
               </tr>
             </tbody>
           </table>
-          <nav aria-label="Pagination" v-if="pagination">
+          <nav aria-label="Pagination" v-if="pagination && pagination.total">
             <ul class="flex-wrap pagination justify-content-center">
               <li 
                 :class="!pagination.links.previous && 'disabled'" 
