@@ -1,4 +1,18 @@
 # kyndryl-test 
+Um projeto o qual é criado um website (Blog) que consome API REST do site https://gorest.co.in/
+
+Foram usados as bibliotecas no projeto:
+- Bootstrap
+- Vuex
+- Axios
+- Vue Routes
+- Vue Jest ( Ainda em fase de estudo )
+
+Rotina de desenvolvimento seguindo por um TODO > https://github.com/henriquefons/mini-project-vue/issues/1
+
+Features para serem desenvolvidas: 
+- Testes unitarios em mais componentes
+- Definir limite para retorno de dados na API
 
 ## Project setup
 ```
