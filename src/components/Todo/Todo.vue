@@ -23,8 +23,17 @@
           </div>
         </form>
         <div v-if="todo.id">
-          <h5 :class="todo.status === 'completed'  ? 'text-decoration-line-through' : ''" class="card-title">{{todo.title}}</h5>
-          <p :class="todo.status === 'completed'  ? 'text-decoration-line-through' : ''" v-if="todo.due_on" class="card-text">Vencimento: {{todo.due_on}}</p>
+          <h5 :class="todo.status === 'completed'  ? 'text-decoration-line-through' : ''" 
+            class="card-title"
+          >
+            {{todo.title}}
+          </h5>
+          <p :class="todo.status === 'completed'  ? 'text-decoration-line-through' : ''" 
+            v-if="todo.due_on"
+            class="card-text"
+          >
+            Vencimento: {{convertDate(todo.due_on)}}
+          </p>
         </div>
       </div>
     </div>  
@@ -34,10 +43,6 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
-  data() {
-    return {
-    }
-  },
   computed: {
     ...mapGetters('storage', ['currentUser']),
     ...mapGetters('todo', ['newTodos', 'errorTodo', 'loadingTodo']),
@@ -61,6 +66,10 @@ export default {
         status: data.status ? 'completed' : 'pending',
       }
       this.createTodo({data: formData, index: this.index})
+    },
+    convertDate(date) {
+      const formatDate = new Date(date)
+      return formatDate.toLocaleString('pt-BR', { timeZone: 'UTC', hour12: false, dateStyle: 'long', timeStyle: 'medium' });
     }
   },
   props: {

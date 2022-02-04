@@ -99,8 +99,8 @@ export default {
   },
   created() {
     if (this.currentUser) { // se usuario tiver logado, mostra só seus posts
-      this.getPostsByUser({ userId: this.currentUser.id });
       this.postsByUser = true;
+      this.getPostsByUser({ userId: this.currentUser.id });
     } else {
       this.getPosts({ page: this.currentPage });
     }

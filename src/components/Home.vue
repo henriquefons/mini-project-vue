@@ -39,11 +39,9 @@ export default {
   computed: {
     ...mapGetters('storage', ['currentUser']),
   },
-  methods: {
-  },
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

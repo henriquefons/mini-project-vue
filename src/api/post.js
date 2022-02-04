@@ -26,12 +26,4 @@ export default {
         .catch((error) => reject(error));
     });
   },
-  editPost(data) {
-    return new Promise((resolve, reject) => {
-      api
-        .put(`/posts/${data.id}`, data)
-        .then((response) => resolve(response.data))
-        .catch((error) => reject(error));
-    });
-  },
 };

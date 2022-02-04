@@ -27,7 +27,6 @@ const actions = {
     postApi
       .getPosts(data)
       .then((data) => {
-        console.log(data)
         commit("setLoading", false);
         commit("setPost", data);
       })
@@ -56,7 +55,7 @@ const actions = {
       .createPost(data)
       .then((data) => {
         commit("setLoading", false);
-        commit("setPost", data.data);
+        commit("setPost", data);
       })
       .catch((error) => {
         commit("setLoading", false);
@@ -71,24 +70,10 @@ const actions = {
       .getPostsByUser(userId, params)
       .then((data) => {
         commit("setLoading", false);
-        if (data) commit("setPost", data.data);
+        if (data) commit("setPost", data);
       })
       .catch((error) => {
         commit("setLoading", false);
-        throw error;
-      });
-  },
-  editPost({ commit }, data) {
-    commit("setLoading", true);
-    postApi
-      .editPost(data)
-      .then((data) => {
-        commit("setPost", data.data);
-        commit("setLoading", false);
-      })
-      .catch((error) => {
-        commit("setLoading", false);
-        commit("setError", error.response?.data?.data);
         throw error;
       });
   },
