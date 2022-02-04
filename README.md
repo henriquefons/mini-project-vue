@@ -1,5 +1,5 @@
-# kyndryl-test 
-Um projeto o qual é criado um website (Blog) que consome API REST do site https://gorest.co.in/
+# Blog Teste 
+Neste projeto, é criado um website (Blog) que consome dados por API REST documentadas em https://gorest.co.in/.
 
 Foram usados as bibliotecas no projeto:
 - Bootstrap
